@@ -1,0 +1,276 @@
+/* Gaya bersama semua halaman hotspot: login, status, logout, error, alogin, radvert.
+   Warna: navy #17344A (teks, fokus), oranye #F26522 (satu aksen: tombol utama). Latar: foto gedung sekolah (asset/bg.jpg).
+   Huruf sistem saja: sebelum login perangkat belum punya internet, jadi tak ada huruf atau berkas dari luar. */
+
+:root {
+	--navy: #17344A;
+	--teks-kedua: #3F5361;
+	--garis: #5F7482;
+	--pemisah: #D5DDE2;
+	--oranye: #F26522;
+	--oranye-hover: #F7733A;
+	--galat: #B00020;
+	--galat-latar: #FDECEE;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+/* Badan halaman boleh digulir: di HP landscape dan jendela popup kartu bisa lebih tinggi dari layar.
+   Lapisan navy tipis di atas foto: hanya agar tepi kartu putih terpisah dari foto yang ramai. */
+body.page {
+	margin: 0;
+	min-height: 100vh;
+	min-height: 100dvh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 16px;
+	background-color: #17344A;
+	background-image: linear-gradient(rgba(23, 52, 74, .38), rgba(23, 52, 74, .38)), url(asset/bg.jpg);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	color: var(--navy);
+	font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Kartu putih polos: satu-satunya permukaan yang memuat teks, jadi kontras tak bergantung pada foto.
+   Bayangan satu-satunya, untuk mengangkat kartu dari foto yang ramai. */
+.card {
+	position: relative;
+	width: 100%;
+	max-width: 360px;
+	padding: 28px 24px;
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 10px 28px rgba(16, 34, 46, .35);
+}
+
+/* Avatar hanya di halaman layar penuh yang meminta identitas (login, error). Halaman status dan logout
+   sering dibuka di jendela popup selebar 280 sampai 290 px, di sana jorokan avatar terlalu mahal. */
+.card.with-avatar {
+	margin-top: 56px;
+	padding-top: 64px;
+}
+
+/* Cincin putih memisahkan avatar dari foto latar. */
+.avatar {
+	position: absolute;
+	top: -56px;
+	left: 50%;
+	width: 112px;
+	height: 112px;
+	margin-left: -56px;
+	border: 6px solid #fff;
+	border-radius: 50%;
+	background: #fff;
+	object-fit: cover;
+}
+
+h1 {
+	margin: 0 0 4px;
+	font-size: 22px;
+	line-height: 1.25;
+	font-weight: 700;
+	text-align: center;
+	overflow-wrap: anywhere;
+	text-wrap: balance;
+}
+
+.sub {
+	margin: 0 0 24px;
+	font-size: 15px;
+	line-height: 1.4;
+	color: var(--teks-kedua);
+	text-align: center;
+	text-wrap: balance;
+}
+
+h1 + .info,
+h1 + .notice,
+h1 + form { margin-top: 20px; }
+
+a { color: var(--navy); text-decoration: underline; }
+
+a:focus {
+	outline: 3px solid var(--navy);
+	outline-offset: 2px;
+}
+
+.notice {
+	margin: 0 0 16px;
+	padding: 12px 14px;
+	border: 1.5px solid var(--galat);
+	border-radius: 8px;
+	background: var(--galat-latar);
+	color: var(--galat);
+	font-size: 15px;
+	line-height: 1.4;
+	overflow-wrap: anywhere;
+}
+
+/* Baris data (status, logout). dl/div agar label dan nilai turun ke baris baru sendiri
+   di jendela sempit, tanpa media query. */
+.info {
+	margin: 0 0 20px;
+	font-size: 14px;
+	line-height: 1.4;
+}
+
+.info div {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	padding: 8px 0;
+	border-bottom: 1px solid var(--pemisah);
+}
+
+.info dt {
+	margin: 0 12px 0 0;
+	font-weight: 600;
+	color: var(--teks-kedua);
+}
+
+.info dd {
+	margin: 0;
+	text-align: right;
+	overflow-wrap: anywhere;
+}
+
+.info .warn { color: var(--galat); font-weight: 600; }
+.info .warn a { color: var(--galat); }
+
+label {
+	display: block;
+	margin: 0 0 6px;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.field {
+	position: relative;
+	margin: 0 0 16px;
+}
+
+.field svg {
+	position: absolute;
+	top: 14px;
+	left: 12px;
+	width: 20px;
+	height: 20px;
+	fill: none;
+	stroke: var(--garis);
+	stroke-width: 1.75;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	pointer-events: none;
+}
+
+input[type="text"],
+input[type="password"] {
+	display: block;
+	width: 100%;
+	height: 48px;
+	padding: 0 12px 0 44px;
+	border: 1.5px solid var(--garis);
+	border-radius: 8px;
+	background: #fff;
+	color: var(--navy);
+	font-family: inherit;
+	/* 16px: di bawah itu iOS memperbesar halaman saat kolom difokus */
+	font-size: 16px;
+	line-height: 1.2;
+	-webkit-appearance: none;
+	appearance: none;
+	transition: border-color .15s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+	border-color: var(--navy);
+	outline: 3px solid var(--navy);
+	outline-offset: 0;
+}
+
+/* Tombol dan tautan bertampang tombol memakai satu aturan. */
+button,
+a.button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 48px;
+	margin: 8px 0 0;
+	padding: 0 16px;
+	border: 0;
+	border-radius: 8px;
+	background: var(--oranye);
+	/* Navy, bukan putih: putih di atas oranye ini hanya 3,15:1 */
+	color: #10222E;
+	font-family: inherit;
+	font-size: 16px;
+	font-weight: 700;
+	text-decoration: none;
+	cursor: pointer;
+	-webkit-appearance: none;
+	appearance: none;
+	transition: background-color .15s;
+}
+
+button:focus,
+a.button:focus {
+	outline: 3px solid var(--navy);
+	outline-offset: 2px;
+}
+
+button:hover,
+a.button:hover { background: var(--oranye-hover); }
+
+button:active,
+a.button:active { transform: translateY(1px); }
+
+button:disabled {
+	background: #E3E8EB;
+	color: var(--teks-kedua);
+	cursor: wait;
+	transform: none;
+}
+
+/* Tombol pelengkap (Log off): oranye dicadangkan untuk satu aksi utama per halaman. */
+.button--quiet {
+	background: #fff;
+	border: 1.5px solid var(--navy);
+}
+
+button.button--quiet:hover,
+a.button--quiet:hover { background: #EAF0F4; }
+
+/* Penanda "sedang menyambung" di alogin. Keterangan teksnya selalu ada di sebelahnya. */
+.spinner {
+	width: 40px;
+	height: 40px;
+	margin: 0 auto 16px;
+	border: 4px solid var(--pemisah);
+	border-top-color: var(--navy);
+	border-radius: 50%;
+	animation: putar 1s linear infinite;
+}
+
+@keyframes putar { to { transform: rotate(360deg); } }
+
+@media (max-width: 380px) {
+	.card { padding-left: 20px; padding-right: 20px; }
+}
+
+/* HP berdiri: kartu di bagian bawah, supaya papan nama sekolah di foto tak tertutup avatar
+   dan formulirnya dekat dengan jempol. */
+@media (max-width: 600px) and (orientation: portrait) {
+	body.page { align-items: flex-end; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	input, button, a.button { transition: none; }
+	.spinner { animation: none; }
+}
